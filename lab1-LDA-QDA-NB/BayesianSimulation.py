@@ -1,8 +1,8 @@
 from Experiment import run_experiments_scheme
 from Generator import generate_data
 from Plot import boxplot_results
-from QDA import QDA
-from LDA import LDA
+from methods import QDA
+from methods import LDA
 
 import matplotlib.pyplot as plt
 import numpy as np

@@ -109,12 +109,12 @@ def estimate_error_bootstrap(model_class, X, y, B=100, random_state=None):
         # Bootstrap sample
         indices = rng.choice(n, size=n, replace=True)
         X_boot = X.iloc[indices]
-        y_boot = y.iloc[indices]
+        y_boot = y[indices]
 
         # Out-of-bag sample
         mask_oob = ~np.isin(np.arange(n), indices)
         X_oob = X.iloc[mask_oob]
-        y_oob = y.iloc[mask_oob]
+        y_oob = y[mask_oob]
 
         if len(y_oob) == 0:
             continue  # skip if no out-of-bag samples
@@ -157,11 +157,11 @@ def estimate_error_bootstrap_632(model_class, X, y, B=100, random_state=None):
     for b in range(B):
         indices = rng.choice(n, size=n, replace=True)
         X_boot = X.iloc[indices]
-        y_boot = y.iloc[indices]
+        y_boot = y[indices]
 
         mask_oob = ~np.isin(np.arange(n), indices)
         X_oob = X.iloc[mask_oob]
-        y_oob = y.iloc[mask_oob]
+        y_oob = y[mask_oob]
 
         if len(y_oob) == 0:
             continue  # skip if no out-of-bag samples

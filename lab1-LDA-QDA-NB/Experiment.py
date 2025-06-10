@@ -1,9 +1,9 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from Generator import generate_data, accuracy_score
-from LDA import LDA
-from QDA import QDA
-from NB import NB
+from methods import LDA
+from methods import QDA
+from methods import NB
 import numpy as np
 
 

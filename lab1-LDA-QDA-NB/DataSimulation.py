@@ -4,9 +4,9 @@ from sklearn.model_selection import train_test_split
 from Generator import accuracy_score
 import numpy as np
 import pandas as pd
-from QDA import QDA
-from LDA import LDA
-from NB import NB
+from methods import QDA
+from methods import LDA
+from methods import NB
 from sklearn.preprocessing import LabelEncoder
 
 

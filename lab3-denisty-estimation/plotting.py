@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from density_estimation import estimate_density
 
-def plot_density_comparison(x_grid, theoretical_fn, estimated_density):
+def plot_density_comparison(x_grid, theoretical_fn, estimated_density, filename='density_comparison.pdf'):
     plt.figure()
     plt.plot(x_grid, theoretical_fn(x_grid), label='Theoretical Density')
     plt.plot(x_grid, estimated_density, label='Estimated Density')
@@ -10,18 +10,20 @@ def plot_density_comparison(x_grid, theoretical_fn, estimated_density):
     plt.ylabel('Density')
     plt.legend()
     plt.title('Theoretical vs. Estimated Density')
-    plt.show()
+    plt.savefig(filename)
+    plt.close()
 
-def plot_mse_vs_sample_size(sample_sizes, mse_list):
+def plot_mse_vs_sample_size(sample_sizes, mse_list, filename='mse_vs_sample_size.pdf'):
     plt.figure()
     plt.plot(sample_sizes, mse_list, marker='o')
     plt.xlabel('Sample Size')
     plt.ylabel('Mean Squared Error')
     plt.title('MSE vs. Sample Size')
     plt.grid()
-    plt.show()
+    plt.savefig(filename)
+    plt.close()
 
-def plot_kernel_comparison(sample, theoretical_fn, x_grid, kernels, bandwidths):
+def plot_kernel_comparison(sample, theoretical_fn, x_grid, kernels, bandwidths, filename='kernel_comparison.pdf'):
     plt.figure(figsize=(10,6))
     for kernel in kernels:
         for bandwidth in bandwidths:
@@ -32,9 +34,10 @@ def plot_kernel_comparison(sample, theoretical_fn, x_grid, kernels, bandwidths):
     plt.ylabel('Density')
     plt.legend()
     plt.title('Kernel and Bandwidth Influence')
-    plt.show()
+    plt.savefig(filename)
+    plt.close()
 
-def plot_density_comparison_methods(x_grid, theoretical_fn, density_method1, density_method2):
+def plot_density_comparison_methods(x_grid, theoretical_fn, density_method1, density_method2, filename='density_comparison_methods.pdf'):
     plt.figure()
     plt.plot(x_grid, theoretical_fn(x_grid), 'k-', label='Theoretical')
     plt.plot(x_grid, density_method1, 'b--', label='Method 1')
@@ -44,4 +47,5 @@ def plot_density_comparison_methods(x_grid, theoretical_fn, density_method1, den
     plt.title('Density Comparison: Method 1 vs. Method 2')
     plt.legend()
     plt.grid()
-    plt.show()
+    plt.savefig(filename)
+    plt.close()

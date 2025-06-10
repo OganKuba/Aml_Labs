@@ -2,8 +2,8 @@ import numpy as np  # biblioteka numeryczna
 from matplotlib import pyplot as plt  # biblioteka do wykresów
 from sklearn.linear_model import LogisticRegression  # regresja logistyczna z sklearn
 
-from task2.compute import fit_and_get_coefs, compute_mse  # importujemy nasze funkcje pomocnicze
-from task2.generate_data import generate_data  # importujemy funkcję generowania danych
+from compute import fit_and_get_coefs, compute_mse  # importujemy nasze funkcje pomocnicze
+from generate_data import generate_data  # importujemy funkcję generowania danych
 
 
 def task2_simulation(L=100, sample_sizes=None):

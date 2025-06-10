@@ -1,6 +1,6 @@
-from task1.compute import fit_logistic_model, compute_log_likelihood
-from task1.data_loader import load_earthquake_data
-from task1.plot import plot_body_surface
+from compute import fit_logistic_model, compute_log_likelihood
+from data_loader import load_earthquake_data
+from plot import plot_body_surface
 
 
 def task1_earthquake(file_path):

@@ -1,34 +1,47 @@
-from data_loader import load_prostate_data
+# task1.py
+
+import numpy as np
+import pandas as pd
+from data_loader  import load_prostate_data
 from model_trainer import fit_logistic_regression
 from profiler import plot_profile
 from cross_validation import cross_validate_lambda
 
-
 def main():
-    # Load data
-    X, y = load_prostate_data('prostate.csv')
+    # === Parametry ===
+    x_filepath = 'prostate_x.txt'   # Plik z danymi X
+    y_filepath = 'prostate_y.txt'   # Plik z etykietami y
+    lambdas = np.logspace(-3, 1, 10)  # Przykładowe wartości lambdy w log-skali
 
-    # Define lambdas
-    lambdas = [0.01, 0.1, 1, 10, 100]
+    # === 1. Wczytaj dane ===
+    X, y = load_prostate_data(x_filepath, y_filepath)
+    y = np.array(y)
 
-    # Lasso
-    coefs_lasso, _ = fit_logistic_regression(X, y, penalty='l1', lambdas=lambdas)
-    plot_profile(lambdas, coefs_lasso)
-    best_lambda_lasso, score_lasso = cross_validate_lambda(X, y, penalty='l1', lambdas=lambdas)
-    print(f"Lasso - Best lambda: {best_lambda_lasso}, CV score: {score_lasso}")
+    # === 2. Modele: lasso, ridge, elastic net ===
+    penalties = ['l1', 'l2', 'elasticnet']
+    l1_ratio = 0.5  # Używane tylko dla elasticnet
 
-    # Ridge
-    coefs_ridge, _ = fit_logistic_regression(X, y, penalty='l2', lambdas=lambdas)
-    plot_profile(lambdas, coefs_ridge)
-    best_lambda_ridge, score_ridge = cross_validate_lambda(X, y, penalty='l2', lambdas=lambdas)
-    print(f"Ridge - Best lambda: {best_lambda_ridge}, CV score: {score_ridge}")
+    for penalty in penalties:
+        print(f"\n=== Model: {penalty.upper()} ===")
+        if penalty == 'elasticnet':
+            coefs, scaler = fit_logistic_regression(X, y, penalty=penalty, l1_ratio=l1_ratio, lambdas=lambdas)
+        else:
+            coefs, scaler = fit_logistic_regression(X, y, penalty=penalty, lambdas=lambdas)
 
-    # Elastic Net
-    coefs_enet, _ = fit_logistic_regression(X, y, penalty='elasticnet', l1_ratio=0.5, lambdas=lambdas)
-    plot_profile(lambdas, coefs_enet)
-    best_lambda_enet, score_enet = cross_validate_lambda(X, y, penalty='elasticnet', l1_ratio=0.5, lambdas=lambdas)
-    print(f"Elastic Net - Best lambda: {best_lambda_enet}, CV score: {score_enet}")
+        # === 3. Drukuj współczynniki ===
+        for idx, lam in enumerate(lambdas):
+            print(f"Lambda={lam:.4f} -> Coefs: {np.round(coefs[idx], 4)}")
 
+        # === 4. Profile współczynników ===
+        var_names = [f"Gene {i+1}" for i in range(X.shape[1])]
+        plot_profile(lambdas, coefs, variable_names=var_names)
+
+        # === 5. Cross-validation ===
+        best_lambda, best_score = cross_validate_lambda(
+            X, y, penalty=penalty, l1_ratio=l1_ratio if penalty == 'elasticnet' else None,
+            lambdas=lambdas, cv=5
+        )
+        print(f"Najlepsza lambda (CV): {best_lambda:.4f} (Dokładność: {best_score:.4f})")
 
 if __name__ == "__main__":
     main()
